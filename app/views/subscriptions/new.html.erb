@@ -1,0 +1,5 @@
+<h1>Subscriptions#new</h1>
+<p>Subscribe to a notification channel here, this way we will be informed on your calendar activity</p>
+<%= form_for @subscription, url: {action: "create"} do |f|%>
+  <%= f.submit "Create a new subscription!" %>
+<% end %>

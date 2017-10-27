@@ -1,0 +1,2 @@
+class StandardEvent < Event
+end

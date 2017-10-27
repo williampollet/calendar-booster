@@ -33,6 +33,19 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# use figaro for env variables
+gem 'figaro'
+
+gem 'devise'
+gem 'pry'
+
+gem 'google-api-client', require: 'google/apis/calendar_v3'
+gem 'googleauth'
+gem 'json'
+gem 'faraday'
+gem 'awesome_print'
+
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

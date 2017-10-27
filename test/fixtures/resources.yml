@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  kind: MyString
+  google_uuid: MyString
+  google_resource_id: MyString
+  google_resource_uri: MyString
+  expiration: 1
+  user: one
+
+two:
+  kind: MyString
+  google_uuid: MyString
+  google_resource_id: MyString
+  google_resource_uri: MyString
+  expiration: 1
+  user: two
