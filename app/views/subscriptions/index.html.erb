@@ -1,13 +1,18 @@
 <h1>Subscriptions#index</h1>
-<p>Welcome everyone! you can view your subscriptions here</p>
-<%= link_to "New subscription!", new_subscription_path %>
-<h2>The list of your subscriptions</h2>
-<% @subscriptions.each do |s| %>
-  <div class="subscription">
-    <ul>
-      <li>kind: <%= s.kind %></li>
-      <li>expires in: <%= s.expiration %></li>
-      <li><%= link_to "unsubscribe", subscription_path(s), method: :delete %>
-    </ul>
-  </div>
+<% if current_user.oauth_refresh_token.nil? %>
+  <%= link_to "Connect your calendar here", controller: "oauth2", action: "redirect" %>
+<% else %>
+  <p> Your calendar is connected! </p>
+  <p>Welcome everyone! you can view your subscriptions here</p>
+  <%= link_to "New subscription!", new_subscription_path %>
+  <h2>The list of your subscriptions</h2>
+  <% @subscriptions.each do |s| %>
+    <div class="subscription">
+      <ul>
+        <li>kind: <%= s.kind %></li>
+        <li>expires in: <%= s.expiration %></li>
+        <li><%= link_to "unsubscribe", subscription_path(s), method: :delete %>
+      </ul>
+    </div>
+  <% end %>
 <% end %>

@@ -9,13 +9,8 @@
   </head>
 
   <body>
-    <% if current_user.oauth_refresh_token.nil? %>
-      <%= link_to "Connect your calendar here", controller: "oauth2", action: "redirect" %>
-    <% else %>
-      <p> Your calendar is connected! </p>
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
-      <%= yield %>
-    <% end %>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    <%= yield %>
   </body>
 </html>
