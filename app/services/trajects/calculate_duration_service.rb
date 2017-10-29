@@ -11,7 +11,6 @@ class Trajects::CalculateDurationService
     end
 
     legs = google_directions_api_response.fetch('routes').first.fetch('legs')
-    raise Traject::ErrorMessageIfSeveralLegs if legs.size > 1
     legs.first.fetch("duration").fetch("value")
   end
 
