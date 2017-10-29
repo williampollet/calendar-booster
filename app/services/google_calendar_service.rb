@@ -27,11 +27,26 @@ class GoogleCalendarService
     JSON.parse(response.body)
   end
 
-  def service
-    @service || initialize_service!
+  def list_events(user_email:, sync_token:, page_token:)
+    service.list_events(
+      user_email,
+      sync_token: sync_token,
+      page_token: page_token
+    )
+  rescue Google::Apis::AuthorizationError
+    refresh_oauth_token
+    retry
+  end
+
+  def insert_event(user_email:, event:)
+    service.insert_event(user_email, event)
   end
 
   private
+
+  def service
+    @service || initialize_service!
+  end
 
   def subscriber
     Faraday.new(url: ENV['GOOGLE_API_URI']) do |conn|
@@ -39,6 +54,9 @@ class GoogleCalendarService
       conn.response :logger                  # log requests to STDOUT
       conn.adapter  Faraday.default_adapter  # make requests with Net::HTTP
     end
+  rescue Google::Apis::AuthorizationError
+    refresh_oauth_token
+    retry
   end
 
   def unsubscriber
@@ -47,17 +65,20 @@ class GoogleCalendarService
       conn.response :logger                  # log requests to STDOUT
       conn.adapter  Faraday.default_adapter  # make requests with Net::HTTP
     end
+  rescue Google::Apis::AuthorizationError
+    refresh_oauth_token
+    retry
   end
 
   def initialize_service!
-   client = Signet::OAuth2::Client.new(client_options)
-   client.update!(
+   @client = Signet::OAuth2::Client.new(client_options)
+   @client.update!(
      access_token: @user.oauth_access_token,
      refresh_token: @user.oauth_refresh_token,
      expires_in: @user.expires_in
    )
    @service = Google::Apis::CalendarV3::CalendarService.new
-   @service.authorization = client
+   @service.authorization = @client
    @service
   end
 
@@ -69,5 +90,16 @@ class GoogleCalendarService
       token_credential_uri: ENV["GOOGLE_TOKEN_URI"],
       scope: Calendar::GoogleOauthScope
     }
+  end
+
+  def refresh_oauth_token
+    response = @client.refresh!
+
+    @user.update!(
+      oauth_access_token: response["access_token"],
+      oauth_refresh_token: response["refresh_token"],
+      expires_in: response["expires_in"],
+      oauth_access_token_expiration_date: Time.now + response["expires_in"]
+    )
   end
 end

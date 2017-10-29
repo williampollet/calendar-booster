@@ -1,13 +1,14 @@
 class Oauth2Controller < ApplicationController
+  include ApplicationHelper
   before_action :authenticate_user!
 
   def redirect
-    client = Signet::OAuth2::Client.new(client_options)
+    client = Signet::OAuth2::Client.new(oauth_client_options)
     redirect_to client.authorization_uri.to_s
   end
 
   def callback
-    client = Signet::OAuth2::Client.new(client_options)
+    client = Signet::OAuth2::Client.new(oauth_client_options)
     client.code = params[:code]
 
     response = client.fetch_access_token!
@@ -24,7 +25,7 @@ class Oauth2Controller < ApplicationController
 
   private
 
-  def client_options
+  def oauth_client_options
     {
       client_id: ENV["GOOGLE_CLIENT_ID"],
       client_secret: ENV["GOOGLE_CLIENT_SECRET"],

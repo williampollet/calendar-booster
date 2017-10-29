@@ -1,7 +1,7 @@
 class Events::EventsGetterService
   def initialize(user:)
     @user = user
-    @calendar_service = GoogleCalendarService.new(user: user).service
+    @calendar_service = GoogleCalendarService.new(user: user)
     @events_creator = Events::CreateOrUpdateService.new
     @events = []
   end
@@ -27,7 +27,7 @@ class Events::EventsGetterService
   def sync_events(sync_token: nil, page_token: nil)
     # get the batch thanks to calendar service
     events = @calendar_service.list_events(
-      @user.email,
+      user_email: @user.email,
       sync_token: sync_token,
       page_token: page_token
     )

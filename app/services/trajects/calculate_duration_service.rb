@@ -2,10 +2,15 @@ class Trajects::CalculateDurationService
   def duration(start_location: Traject::DefaultDestination, end_location: Traject::DefaultDestination, departure_time: nil, arrival_time: nil)
     @start_location = start_location
     @end_location = end_location
-    @departure_time = departure_time
-    @arrival_time = arrival_time
+    (@departure_time = departure_time.to_i) if @departure_time
+    (@arrival_time = arrival_time.to_i) if @arrival_time
 
-    legs = google_directions_api_response.fetch('legs')
+    # par défaut, un trajet dure 30 min on se dit...
+    if @start_location == @end_location
+      return 1800
+    end
+
+    legs = google_directions_api_response.fetch('routes').first.fetch('legs')
     raise Traject::ErrorMessageIfSeveralLegs if legs.size > 1
     legs.first.fetch("duration").fetch("value")
   end
@@ -21,7 +26,7 @@ class Trajects::CalculateDurationService
       req.params['key'] = ENV['MAPS_API_KEY']
       req.params['origin'] = @start_location
       req.params['destination'] = @end_location
-      req.params['mode'] = TravelMode
+      req.params['mode'] = Traject::TravelMode
       req.params['arrival_time'] = @arrival_time
       req.params['departure_time'] = @departure_time
     end

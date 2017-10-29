@@ -1,4 +1,6 @@
 class SubscriptionsController < ApplicationController
+  include ApplicationHelper
+
   def show
   end
 

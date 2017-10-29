@@ -9,7 +9,7 @@
   </head>
 
   <body>
-    <% if current_user.oauth_access_token.nil? || current_user.oauth_access_token_expiration_date < DateTime.now %>
+    <% if current_user.oauth_refresh_token.nil? %>
       <%= link_to "Connect your calendar here", controller: "oauth2", action: "redirect" %>
     <% else %>
       <p> Your calendar is connected! </p>

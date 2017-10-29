@@ -1,4 +1,5 @@
 class NotificationsController < ApplicationController
+  include ApplicationHelper
   skip_before_action :verify_authenticity_token, :authenticate_user!
 
   def create
@@ -7,10 +8,10 @@ class NotificationsController < ApplicationController
     events = Events::EventsGetterService.new(user: user).synchronize_calendar
     # before changing anything refactor this service (which is not object oriented)
     unless events.empty?
-      validator = Validators::ActionnableEventsValidator.new
+      validator = ActionnableEventsValidator.new
       events.each do |e|
-        if validator.validates?(e)
-
+        if validator.validates?(e)[:ok]
+          Trajects::CreateTrajectService.new(user: user).perform(trigger_event: e)
         end
       end
     end
