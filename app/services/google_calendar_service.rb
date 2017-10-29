@@ -5,18 +5,18 @@ class GoogleCalendarService
 
   def unsubscribe(subscription:)
     unsubscriber.post do |req|
-        req.url ENV["STOP_NOTIFICATIONS_URL"]
-        req.headers['Content-Type'] = 'application/json'
-        req.body = {
-          "id": subscription.google_uuid,
-          "resourceId": subscription.google_resource_id,
-        }.to_json
-      end
+      req.url ENV["STOP_NOTIFICATIONS_URL"]
+      req.headers['Content-Type'] = 'application/json'
+      req.body = {
+        "id": subscription.google_uuid,
+        "resourceId": subscription.google_resource_id,
+      }.to_json
+    end
   end
 
   def subscribe
     response = subscriber.post do |req|
-      req.url ENV["SUBSCRIBE_URL"]
+      req.url "/calendar/v3/calendars/#{@user.calendar_id}/events/watch"
       req.headers['Content-Type'] = 'application/json'
       req.body = {
         "id": SecureRandom.uuid,
@@ -36,6 +36,10 @@ class GoogleCalendarService
   rescue Google::Apis::AuthorizationError
     refresh_oauth_token
     retry
+  end
+
+  def list_calendars
+    service.list_calendar_lists
   end
 
   def insert_event(user_email:, event:)

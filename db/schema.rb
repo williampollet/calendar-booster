@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171027103130) do
+ActiveRecord::Schema.define(version: 20171029115516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20171027103130) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "calendar_id"
+    t.string "calendar_id", default: "primary"
     t.string "oauth_access_token"
     t.string "oauth_refresh_token"
     t.string "sync_token"
