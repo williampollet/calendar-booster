@@ -101,7 +101,6 @@ class GoogleCalendarService
 
     @user.update!(
       oauth_access_token: response["access_token"],
-      oauth_refresh_token: response["refresh_token"],
       expires_in: response["expires_in"],
       oauth_access_token_expiration_date: Time.now + response["expires_in"]
     )
