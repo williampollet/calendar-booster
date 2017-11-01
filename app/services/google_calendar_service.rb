@@ -46,6 +46,15 @@ class GoogleCalendarService
     service.insert_event(user_email, event)
   end
 
+  def refresh_oauth_token
+    response = client.refresh!
+    @user.update!(
+      oauth_access_token: response["access_token"],
+      expires_in: response["expires_in"],
+      oauth_access_token_expiration_date: Time.now + response["expires_in"]
+    )
+  end
+
   private
 
   def service
@@ -74,15 +83,23 @@ class GoogleCalendarService
     retry
   end
 
+  def client
+    @client || initialize_client!
+  end
+
+  def initialize_client!
+    @client = Signet::OAuth2::Client.new(client_options)
+    @client.update!(
+      access_token: @user.oauth_access_token,
+      refresh_token: @user.oauth_refresh_token,
+      expires_in: @user.expires_in
+    )
+    @client
+  end
+
   def initialize_service!
-   @client = Signet::OAuth2::Client.new(client_options)
-   @client.update!(
-     access_token: @user.oauth_access_token,
-     refresh_token: @user.oauth_refresh_token,
-     expires_in: @user.expires_in
-   )
    @service = Google::Apis::CalendarV3::CalendarService.new
-   @service.authorization = @client
+   @service.authorization = client
    @service
   end
 
@@ -94,15 +111,5 @@ class GoogleCalendarService
       token_credential_uri: ENV["GOOGLE_TOKEN_URI"],
       scope: Calendar::GoogleOauthScope
     }
-  end
-
-  def refresh_oauth_token
-    response = @client.refresh!
-
-    @user.update!(
-      oauth_access_token: response["access_token"],
-      expires_in: response["expires_in"],
-      oauth_access_token_expiration_date: Time.now + response["expires_in"]
-    )
   end
 end
