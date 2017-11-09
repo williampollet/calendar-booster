@@ -68,7 +68,7 @@
   "environments": {
     "test": {
       "scripts": {
-        "test": ""
+        "test": "rspec spec"
       }
     }
   }
