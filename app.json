@@ -1,6 +1,7 @@
 {
   "name": "calendar-booster",
   "scripts": {
+    "postdeploy": "rake db:migrate"
   },
   "env": {
     "APPLICATION_NAME": {
