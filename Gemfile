@@ -5,6 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+ruby '2.3.4'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'
@@ -44,7 +45,7 @@ gem 'googleauth'
 gem 'json'
 gem 'faraday'
 gem 'awesome_print'
-
+gem 'rspec'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -64,5 +64,13 @@
     {
       "url": "heroku/ruby"
     }
-  ]
+  ],
+  "environments": {
+    "test": {
+      "scripts": {
+        "postdeploy": "bundle exec rake db:migrate",
+        "test": "bundle exec rspec spec"
+      }
+    }
+  }
 }
