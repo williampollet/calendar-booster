@@ -1,0 +1,68 @@
+{
+  "name": "calendar-booster",
+  "scripts": {
+  },
+  "env": {
+    "APPLICATION_NAME": {
+      "required": true
+    },
+    "DEFAULTDESTINATION": {
+      "required": true
+    },
+    "GOOGLE_API_URI": {
+      "required": true
+    },
+    "GOOGLE_AUTH_PROVIDER_X509_CERT_URL": {
+      "required": true
+    },
+    "GOOGLE_AUTH_URI": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_ID": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_SECRET": {
+      "required": true
+    },
+    "GOOGLE_PROJECT_ID": {
+      "required": true
+    },
+    "GOOGLE_REDIRECT_URIS": {
+      "required": true
+    },
+    "GOOGLE_TOKEN_URI": {
+      "required": true
+    },
+    "LANG": {
+      "required": true
+    },
+    "MAPS_API_KEY": {
+      "required": true
+    },
+    "NOTIFICATION_URL": {
+      "required": true
+    },
+    "OOB_URI": {
+      "required": true
+    },
+    "RACK_ENV": {
+      "required": true
+    },
+    "STOP_NOTIFICATIONS_URL": {
+      "required": true
+    },
+    "SUBSCRIBE_URL": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    }
+  ]
+}
