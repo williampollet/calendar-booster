@@ -1,7 +1,6 @@
 {
   "name": "calendar-booster",
   "scripts": {
-    "postdeploy": "run rake db:migrate"
   },
   "env": {
     "APPLICATION_NAME": {
@@ -69,6 +68,7 @@
   "environments": {
     "test": {
       "scripts": {
+        "postdeploy": "bundle exec rake db:migrate",
         "test": "bundle exec rspec spec"
       }
     }
